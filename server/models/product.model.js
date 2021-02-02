@@ -24,13 +24,9 @@ const ProductSchema = new mongoose.Schema(
         default: 0
     },
     categories: [String],
-    photos: [{
-      path: String,
-      main: Boolean,
-      display: Boolean
-    }]
+    photos: [String]
   },
-  { timestamps: true}
+  { timestamps: true }
 );
 
 module.exports.Product = mongoose.model("Product", ProductSchema);
