@@ -2,16 +2,33 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import QuickViewModal from "./QuickViewModal";
 import Header from "./Header";
+import { navigate } from "@reach/router";
 
 export default props => {
-    const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
+  const addProduct = ()=> {
+    if (props.location.state) {
+      alert("product added to cart.");  
+    }else{
+      alert("Login first to add to cart");
+      navigate('/login');
+  }
+}
   return (
     <>
-      {props.location.state.userId ? (
-        <Header isLoginButton={false} isRegisterButton={false} isLogoutButton={true} />
+      {props.location.state !== null ? (
+        <Header
+          isLoginButton={false}
+          isRegisterButton={false}
+          isLogoutButton={true}
+        />
       ) : (
-        <Header isLoginButton={true} isRegisterButton={true} />
+        <Header
+          isLoginButton={true}
+          isRegisterButton={true}
+          isLogoutButton={false}
+        />
       )}
       <br />
       <div className="container">
@@ -37,9 +54,9 @@ export default props => {
                     </a>
                   </li>
                 </ul>
-                <a className="add-to-cart" href="">
+                <button className="add-to-cart" onClick={addProduct}>
                   Add to cart
-                </a>
+                </button>
               </div>
               <div className="product-content">
                 <h3 className="title">

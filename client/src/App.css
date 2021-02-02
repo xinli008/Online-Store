@@ -162,6 +162,7 @@ body {
 
 .product-grid2 .add-to-cart {
   color: #fff;
+  border: 0;
   background-color: #404040;
   font-size: 15px;
   text-align: center;

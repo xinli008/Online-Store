@@ -4,9 +4,11 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, navigate } from "@reach/router";
 import axios from "axios";
+import logo from "../images/logo.PNG";
 
 export default props => {
    const logout = () => {
+          
      axios
        .post(
          "http://localhost:8000/api/logout",
@@ -16,16 +18,17 @@ export default props => {
          }
        )
        .then(res => {
-         console.log(res);
+         console.log(res);         
        })
-       .catch(err=> console.log(err));
-
-     navigate("/");
+       .catch(err=> console.log(err));       
+     navigate("/login");
    };
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="/">Shopee-Zone</Navbar.Brand>
+        <Navbar.Brand href="/">
+          <img alt="logo" src={logo} />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

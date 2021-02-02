@@ -35,9 +35,8 @@ const Login = props => {
         )
         .then(res => {
           console.log(res);
-          // + res.data.userLogged.id
           navigate("/productlist/", {
-            state: { userId: res.data.msg }
+            state: res.data.msg 
           });
         })
         .catch(err => {
