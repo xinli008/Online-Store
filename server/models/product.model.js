@@ -23,6 +23,7 @@ const ProductSchema = new mongoose.Schema(
         type: Number,
         default: 0
     },
+    categories: [String],
     photos: [{
       path: String,
       main: Boolean,

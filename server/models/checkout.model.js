@@ -11,14 +11,7 @@ const CheckoutSchema = new mongoose.Schema(
         message: "Please submit a valid email"
       }
     },
-    products: {
-        productId: [{
-            productId: {
-                type: String,
-                required: [true, "Product ids must be provided for checkout"]
-            }
-        }]
-    },
+    products: [String],
     payment: {
         amount: {
             type: Number,
@@ -53,7 +46,7 @@ const CheckoutSchema = new mongoose.Schema(
                 maxlength: [4, "CVV must be at most 4 characters in length"]
             }
         },
-        paymentAddress : {
+        billingAddress : {
             streetAddress: {
                 type: String,
                 required: [true, "Address is required."],
