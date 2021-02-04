@@ -125,16 +125,10 @@ UserSchema.pre("save", function (next) {
   bcrypt.hash(this.password, 10)
     .then((hash) => {
       this.password = hash;
-    })
-    .then(() => {
-      bcrypt.hash(this.cardNumber, 10).then((encCC) => {
-        this.cardNumber = encCC;
-        next();
-      });
     });
 });
 
-const encrypt = (text) => {
+function encrypt(text) {
   bcrypt.hash(text, 10).then((hashedData) => {
     return hashedData;
   });
