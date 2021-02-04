@@ -15,6 +15,15 @@ module.exports.getUser = (req, res) => {
     .catch((err) => res.json(err));
 };
 
+module.exports.getLoggedInUser = (req, res) => {
+ 
+  const decodedJWT = jwt.decode(req.cookies.usertoken, { complete: true });
+
+ User.findById(decodedJWT.payload.id)
+.then(user => res.json({ user: user }))
+.catch(err => res.json({ error: err }));
+};
+
 module.exports.register = (req, res) => {
   User.create(req.body)
     .then(user => {
