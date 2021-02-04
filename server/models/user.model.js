@@ -55,20 +55,17 @@ const UserSchema = new mongoose.Schema(
       card: {
         nameOnCard: {
             type: String,
-            required: [true, "Name on card is required."],
             minlength: [3, "Name on card must be 3 characters or longer"],
             maxlength: [25, "Name on card must be shorter than 25 characters"]
         },
         cardNumber: {
             type: String, 
             set: encrypt,
-            required: [true, "Card number is required"],
             minlength: [16, "Card number must be 15 or 16 characters"],
             maxlength: [16, "Card number must be 16 characters"]
         },
         expiration: {
             type: String,
-            required: [true, "Expiration date is required"],
             validate: {
                 validator: val => /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/.test(val),
                 message: "Expiration must come in format MM/YY or MM/YYYY"
@@ -76,7 +73,6 @@ const UserSchema = new mongoose.Schema(
         },
         cvv: {
             type: Number,
-            required: [true, "CVV is required"],
             minlength: [3, "CVV must be 3 or 4 characters in length"],
             maxlength: [4, "CVV must be at most 4 characters in length"]
         }
@@ -84,24 +80,20 @@ const UserSchema = new mongoose.Schema(
       billingAddress : {
         streetAddress: {
             type: String,
-            required: [true, "Address is required."],
             minlength: [15, "Address must be 15 characters or longer"],
             maxlength: [200, "Address must be shorter than 100 characters"]
         },
         city: {
             type: String,
-            required: [true, "City is required."],
             minlength: [3, "City must be 3 characters or longer"],
             maxlength: [20, "City must be shorter than 100 characters"]
         },
         state: {
             type: String,
-            required: [true, "State is required."],
             minlength: [2, "State must 2 characters in legth"]
         },
         zip: {
             type: String,
-            required: [true, "Zip is required."],
             minlength: [5, "Zip must 2 numbers in legth"]
         }
       }
