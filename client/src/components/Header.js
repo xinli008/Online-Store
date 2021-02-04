@@ -5,8 +5,28 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, navigate } from "@reach/router";
 import axios from "axios";
 import logo from "../images/logo.PNG";
-
+import { faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+ 
 export default props => {
+  
+  const viewDashboard = () => {
+    axios
+      .get(`http://localhost:8000/api/users/${props.userRec.id}`, {
+        withCredentials: true
+      })
+      .then(res => {
+        //console.log(res.data[0]);
+        navigate("/dashboard/", {
+          state: res.data[0]
+        });        
+      })
+      .catch(err => {
+        //alert("not authorized");
+        console.log(err);
+      });
+
+  }
    const logout = () => {
           
      axios
@@ -18,31 +38,21 @@ export default props => {
          }
        )
        .then(res => {
-         console.log(res);         
+         console.log(res);
        })
-       .catch(err=> console.log(err));       
+       .catch(err => console.log(err));       
      navigate("/login");
    };
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="/">
+        <Navbar.Brand>
           <img alt="logo" src={logo} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown title="Products" id="collasible-nav-dropdown" disabled>
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
+            {!props.isLogoutButton ? <Nav.Link href="/">Home</Nav.Link> : ""}            
           </Nav>
           <Nav>
             {props.isLoginButton ? (
@@ -53,6 +63,20 @@ export default props => {
             {props.isRegisterButton ? (
               <Nav.Link eventKey={2} href="/register">
                 Register
+              </Nav.Link>
+            ) : (
+              ""
+            )}
+            {props.isLogoutButton ? (
+              <Nav.Link onClick={viewDashboard}>
+                <FontAwesomeIcon icon={faUser} />
+              </Nav.Link>
+            ) : (
+              ""
+            )}
+            {props.isLogoutButton ? (
+              <Nav.Link onClick={() => navigate("/shoppingcart")}>
+                <FontAwesomeIcon icon={faShoppingCart} />1
               </Nav.Link>
             ) : (
               ""

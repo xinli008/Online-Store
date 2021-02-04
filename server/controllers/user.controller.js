@@ -17,21 +17,21 @@ module.exports.getUser = (req, res) => {
 
 module.exports.register = (req, res) => {
   User.create(req.body)
-    .then((user) => {
+    .then(user => {
       const userToken = jwt.sign(
         {
-          id: user._id,
+          id: user._id
         },
         process.env.SECRET_KEY
       );
 
       res
         .cookie("usertoken", userToken, secret, {
-          httpOnly: true,
+          httpOnly: true
         })
         .json({ msg: "success!", user: user });
     })
-    .catch((err) => res.json(err));
+    .catch(err => res.status(400).json(err));
 };
 
 module.exports.login = async (req, res) => {
@@ -39,7 +39,7 @@ module.exports.login = async (req, res) => {
 
   if (user === null) {
     // email not found in users collection
-    return res.sendStatus(400);
+    return res.status(400).json({ msg: "Invalid login attempt!" });
   } // if we made it this far, we found a user with this email address // let's compare the supplied password to the hashed password in the database
 
   const correctPassword = await bcrypt.compare(
@@ -49,7 +49,7 @@ module.exports.login = async (req, res) => {
 
   if (!correctPassword) {
     // password wasn't a match!
-    return res.sendStatus(400);
+    return res.status(400).json({ msg: "Invalid login attempt!" }); 
   } // if we made it this far, the password was correct
 
   const userToken = jwt.sign(
@@ -62,9 +62,21 @@ module.exports.login = async (req, res) => {
   // note that the response object allows chained calls to cookie and json
   res
     .cookie("usertoken", userToken, secret, {
-      httpOnly: true,
+      httpOnly: true
     })
-    .json({ msg: user._id });
+    .json({
+      msg: "success!",
+      loggedInUser: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        zip: user.zip,
+        email: user.email
+      }
+    });
 };
 
 module.exports.logout = (req, res) => {

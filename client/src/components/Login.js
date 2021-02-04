@@ -36,7 +36,7 @@ const Login = props => {
         .then(res => {
           console.log(res);
           navigate("/productlist/", {
-            state: res.data.msg 
+            state: res.data 
           });
         })
         .catch(err => {

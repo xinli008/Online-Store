@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import Alert from "react-bootstrap/Alert";
 import Header from "./Header";
 
@@ -38,7 +38,11 @@ const Register = props => {
         setErrors(err.response.data.errors);
       });
   };
-
+const cancelRegister = () => {
+  navigate("/productlist/", {
+    state: null
+  });
+}
   return (
     <>
       <Header isLoginButton={true} isRegisterButton={false} /> <br />
@@ -63,7 +67,7 @@ const Register = props => {
                     >
                       <Alert.Heading>Success!</Alert.Heading>
                       <p>
-                        User created successfully! 
+                        User created successfully!
                         <Link to={"/login"}> Click here</Link> to Login...
                       </p>
                     </Alert>
@@ -271,11 +275,11 @@ const Register = props => {
             >
               Register
             </Button>{" "}
-            <Link to={"/"}>
-              <Button type="button" variant="outline-danger" size="sm">
+            
+              <Button type="button" variant="outline-danger"
+              onClick={cancelRegister} size="sm">
                 Cancel
               </Button>
-            </Link>
           </Card.Footer>
         </Card>
       </div>

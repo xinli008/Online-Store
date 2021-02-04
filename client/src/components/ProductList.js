@@ -3,11 +3,14 @@ import axios from "axios";
 import QuickViewModal from "./QuickViewModal";
 import Header from "./Header";
 import { navigate } from "@reach/router";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default props => {
   const [modalShow, setModalShow] = useState(false);
 
   const addProduct = ()=> {
+        
     if (props.location.state) {
       alert("product added to cart.");  
     }else{
@@ -22,6 +25,7 @@ export default props => {
           isLoginButton={false}
           isRegisterButton={false}
           isLogoutButton={true}
+          userRec={props.location.state.loggedInUser}
         />
       ) : (
         <Header
@@ -50,7 +54,7 @@ export default props => {
                 <ul className="social">
                   <li onClick={() => setModalShow(true)}>
                     <a data-tip="Quick View">
-                      <i className="fa fa-eye"></i>
+                      <FontAwesomeIcon icon={faEye} />
                     </a>
                   </li>
                 </ul>

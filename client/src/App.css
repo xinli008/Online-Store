@@ -2,7 +2,11 @@
   text-align: center;
 }
 
-body {
+.error-message {
+  color:red;
+}
+
+html {
   background-color: lightgrey;
 }
 
@@ -115,7 +119,7 @@ body {
   color: #505050;
   background-color: #fff;
   font-size: 17px;
-  line-height: 45px;
+  line-height: 35px;
   text-align: center;
   height: 30px;
   width: 30px;
