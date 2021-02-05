@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import UserDashboard from "./components/UserDashboard";
 import ShoppingCart from "./components/ShoppingCart";
+import Checkout from "./components/Checkout";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Register path="/register" />
         <UserDashboard path="/dashboard" />
         <ShoppingCart path="/shoppingcart" />
+        <Checkout path="/checkout" />
       </Router>
     </div>
   );

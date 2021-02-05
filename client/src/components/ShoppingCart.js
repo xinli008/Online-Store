@@ -6,6 +6,7 @@ import "font-awesome/css/font-awesome.min.css";
 import "mdbreact/dist/css/mdb.css";
 
 const ShoppingCart = props => {
+  const [qty, setQty] = useState(1);
   return (
     <div>
       <Header isLogoutButton={true} /> <br />
@@ -54,9 +55,18 @@ const ShoppingCart = props => {
                         </div>
                         <div>
                           <div className="mb-0 w-100">
-                            <i onClick="stepDown()" className="fa fa-minus"></i>
-                            <input id="number" type="number" value="1" />
-                            <i onClick="stepUp()" className="fa fa-plus"></i>
+                            <i
+                              onClick={() => (qty>0) ? setQty(qty - 1): qty}
+                              className="fa fa-minus"
+                            ></i>
+                            <input
+                              type="number"
+                              id="quantity"
+                              name="quantity"
+                              min="0"
+                              value={qty}
+                            />
+                            <i onClick={() => setQty(qty + 1)} className="fa fa-plus"></i>
                           </div>
                           <small
                             id="passwordHelpBlock"
@@ -159,7 +169,7 @@ const ShoppingCart = props => {
                 <button
                   type="button"
                   className="btn btn-primary btn-block waves-effect waves-light"
-                  onClick={()=> navigate("/")}
+                  onClick={() => navigate("/checkout")}
                 >
                   go to checkout
                 </button>

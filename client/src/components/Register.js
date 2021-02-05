@@ -19,7 +19,7 @@ const Register = props => {
   const [errors, setErrors] = useState({});
   const [userCreated, setUserCreated] = useState(false);
 
-  const register = event => {
+  const registerUser = event => {
     event.preventDefault();
 
     const newUser = { firstName, lastName, address, city, state, zip, email, password, confirmPassword };
@@ -32,6 +32,15 @@ const Register = props => {
         console.log(res);
         setUserCreated(true);
         //navigate("/login");
+        setFirstName("");
+        setLastName("");
+        setAddress("");
+        setCity("");
+        setState("");
+        setZip("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
       })
       .catch(err => {
         console.log(err);
@@ -42,7 +51,7 @@ const cancelRegister = () => {
   navigate("/productlist/", {
     state: null
   });
-}
+};
   return (
     <>
       <Header isLoginButton={true} isRegisterButton={false} /> <br />
@@ -270,7 +279,7 @@ const cancelRegister = () => {
             <Button
               type="button"
               variant="outline-success"
-              onClick={register}
+              onClick={registerUser}
               size="sm"
             >
               Register

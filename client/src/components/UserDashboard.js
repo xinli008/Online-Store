@@ -19,13 +19,13 @@ const UserDashboard = props => {
           <div className="col-lg-8">
             <div className="card mb-3">
               <div className="card-body">
+                <h5 className="mb-4">User Detail</h5>
+                <hr className="mb-4"></hr>
                 <div className="row mb-4">
                   <div className="col">
                     <div>
-                      <div className="d-flex justify-content-center w-5">
+                      <div className="d-flex justify-content-between">
                         <div>
-                          <h5 className="mb-4">User Detail</h5>
-                          <hr className="mb-4"></hr>
                           <p className="mb-2 text-muted">
                             First Name: {props.location.state.firstName}
                           </p>
@@ -52,6 +52,15 @@ const UserDashboard = props => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="card mb-3">
+              <div className="card-body">
+                <h5 className="mb-4">Recent Orders</h5>
+                <hr className="mb-4"></hr>
+                <p className="mb-2 text-muted">
+                  You haven't placed any orders yet!
+                </p>
               </div>
             </div>
           </div>

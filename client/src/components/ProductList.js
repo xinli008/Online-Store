@@ -9,6 +9,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default props => {
   const [modalShow, setModalShow] = useState(false);
 
+  useEffect(() => {
+   /* axios
+      .get("http://localhost:8000/api/users/getLoggedInUser")
+      .then(res => {
+        console.log("success!");
+        console.log(res);
+      })
+      .catch(err => {
+        console.log("Error!");        
+        console.log(err);
+      });*/
+
+      axios
+        .get("http://localhost:8000/api/product")
+        .then(res => {
+          console.log("success!");
+          console.log(res);
+        })
+        .catch(err => {
+          console.log("Error!");
+          console.log(err);
+        });
+  }, []);
+
   const addProduct = ()=> {
         
     if (props.location.state) {
@@ -70,6 +94,7 @@ export default props => {
               </div>
             </div>
           </div>
+          
         </div>
         <QuickViewModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
