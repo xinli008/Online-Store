@@ -3,9 +3,10 @@ const { Checkout } = require("../models/checkout.model");
 const secret = process.env.SECRET_KEY;
 
 module.exports.doCheckout = (req, res) => {
-    let cc = req.body.payment.card;
-    let billingAddress = req.body.payment.billingAddress;
-    let paymentConfirmation = processPayment(cc, billingAddress);
+   // let cc = req.body.payment.card;
+   // let billingAddress = req.body.payment.billingAddress;
+    //let paymentConfirmation = processPayment( cc, billingAddress);
+    let paymentConfirmation = processPayment(req.body.payment);
     let products = req.body.products;
     
     if (paymentConfirmation == null || paymentConfirmation.length === 0) {
@@ -22,8 +23,9 @@ module.exports.doCheckout = (req, res) => {
 };  
 
 
-const processPayment = (cc, address) => {
-    // Process payment with 3rd party CC API ...
+//const processPayment = (cc, address) => {
+const processPayment = (payment) =>{
+// Process payment with 3rd party CC API ...
     return create_UUID();
 };
 
