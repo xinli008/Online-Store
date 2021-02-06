@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -7,42 +7,49 @@ import axios from "axios";
 import logo from "../images/logo.PNG";
 import { faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
- 
+
 export default props => {
-  
-  const viewDashboard = () => {
+
+  const [loggedInUser, setLoggedInUser] = useState({});
+  const [isLoginButton, setIsLoginButton] = useState(false);
+  const [isRegisterButton, setIsRegisterButton] = useState(false);
+  const [isLogoutButton, setIsLogoutButton] = useState(false);
+
+  useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/users/${props.userRec.id}`, {
+      .get("http://localhost:8000/api/users/getLoggedInUser", {
         withCredentials: true
       })
       .then(res => {
-        //console.log(res.data[0]);
-        navigate("/dashboard/", {
-          state: res.data[0]
-        });        
+        //console.log(res);
+        setLoggedInUser(res.data.user);
+        setIsLogoutButton(true);
+        //navigate("/productlist");
       })
       .catch(err => {
-        //alert("not authorized");
+        setIsLoginButton(true);
+        setIsRegisterButton(true);
         console.log(err);
       });
 
-  }
-   const logout = () => {
-          
-     axios
-       .post(
-         "http://localhost:8000/api/logout",
-         {},
-         {
-           withCredentials: true
-         }
-       )
-       .then(res => {
-         console.log(res);
-       })
-       .catch(err => console.log(err));       
-     navigate("/login");
-   };
+  }, []);
+  
+  const logout = () => {
+
+    axios
+      .post(
+        "http://localhost:8000/api/logout",
+        {},
+        {
+          withCredentials: true
+        }
+      )
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+    navigate("/login");
+  };
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -52,40 +59,40 @@ export default props => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            {!props.isLogoutButton ? <Nav.Link href="/">Home</Nav.Link> : ""}            
+            <Nav.Link onClick={() => navigate("/productlist")}>Home</Nav.Link>
           </Nav>
           <Nav>
-            {props.isLoginButton ? (
-              <Nav.Link href="/login">Log In</Nav.Link>
+            {isLoginButton ? (
+              <Nav.Link onClick={() => navigate("/login")}>Log In</Nav.Link>
             ) : (
-              ""
-            )}
-            {props.isRegisterButton ? (
-              <Nav.Link eventKey={2} href="/register">
+                ""
+              )}
+            {isRegisterButton ? (
+              <Nav.Link eventKey={2} onClick={() => navigate("/register")}>
                 Register
               </Nav.Link>
             ) : (
-              ""
-            )}
-            {props.isLogoutButton ? (
-              <Nav.Link onClick={viewDashboard}>
+                ""
+              )}
+            {isLogoutButton ? (
+              <Nav.Link onClick={() => navigate("/dashboard")}>
                 <FontAwesomeIcon icon={faUser} />
               </Nav.Link>
             ) : (
-              ""
-            )}
-            {props.isLogoutButton ? (
+                ""
+              )}
+            {isLogoutButton ? (
               <Nav.Link onClick={() => navigate("/shoppingcart")}>
-                <FontAwesomeIcon icon={faShoppingCart} />1
+                <FontAwesomeIcon icon={faShoppingCart} />
               </Nav.Link>
             ) : (
-              ""
-            )}
-            {props.isLogoutButton ? (
+                ""
+              )}
+            {isLogoutButton ? (
               <Nav.Link onClick={logout}>Log Out</Nav.Link>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

@@ -1,6 +1,8 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
+import Carousel from 'react-bootstrap/Carousel'
 
 const QuickViewModal = (props) => {
   return (
@@ -12,19 +14,35 @@ const QuickViewModal = (props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Women's Designer Top
+          {props.productData.productName}{" "}
+          <Badge variant="primary">${props.productData.price}</Badge>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Item Description</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
+        <div className="row">
+          <div className="col-lg-3"></div>
+          <div className="col-lg-6">
+            <Carousel>
+              {props.productImages.map((image, i) => (
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100"
+                    src={image}
+                    alt="images"
+                    style={{ objectFit: "fill" }}
+                  />
+                </Carousel.Item>
+              ))}
+            </Carousel>
+          </div>
+          <div className="col-lg-3"></div>
+        </div>
+
+        <h5>Item Description</h5>
+        <p>{props.productData.description}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="success">Add to Cart</Button> {" "}
+        <Button variant="success">Add to Cart</Button>{" "}
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>

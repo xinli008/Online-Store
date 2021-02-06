@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
@@ -9,10 +9,27 @@ import axios from "axios";
 import Header from "./Header";
 
 const UserDashboard = props => {
+      const [loggedInUser, setLoggedInUser] = useState({});
+
+      useEffect(() => {
+        axios
+          .get("http://localhost:8000/api/users/getLoggedInUser", {
+            withCredentials: true
+          })
+          .then(res => {
+            //console.log(res);
+            setLoggedInUser(res.data.user);
+            
+          })
+          .catch(err => {
+           
+            console.log(err);
+          });
+      }, []); 
       
   return (
     <>
-      <Header isLogoutButton={true} userRec={props.location.state} /> <br />
+      <Header /> <br />
       <section className="container">
         <div className="row">
           <div className="col-lg-2"></div>
@@ -27,25 +44,25 @@ const UserDashboard = props => {
                       <div className="d-flex justify-content-between">
                         <div>
                           <p className="mb-2 text-muted">
-                            First Name: {props.location.state.firstName}
+                            First Name: {loggedInUser.firstName}
                           </p>
                           <p className="mb-2 text-muted">
-                            Last Name: {props.location.state.lastName}
+                            Last Name: {loggedInUser.lastName}
                           </p>
                           <p className="mb-2 text-muted">
-                            Email: {props.location.state.email}
+                            Email: {loggedInUser.email}
                           </p>
                           <p className="mb-2 text-muted">
-                            Address: {props.location.state.address}
+                            Address: {loggedInUser.address}
                           </p>
                           <p className="mb-2 text-muted">
-                            City: {props.location.state.city}
+                            City: {loggedInUser.city}
                           </p>
                           <p className="mb-2 text-muted">
-                            State: {props.location.state.state}
+                            State: {loggedInUser.state}
                           </p>
                           <p className="mb-2 text-muted">
-                            Zipcode: {props.location.state.zip}
+                            Zipcode: {loggedInUser.zip}
                           </p>
                         </div>
                       </div>

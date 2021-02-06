@@ -22,7 +22,17 @@ const Register = props => {
   const registerUser = event => {
     event.preventDefault();
 
-    const newUser = { firstName, lastName, address, city, state, zip, email, password, confirmPassword };
+    const newUser = {
+      firstName,
+      lastName,
+      address,
+      city,
+      state,
+      zip,
+      email,
+      password,
+      confirmPassword
+    };
 
     axios
       .post("http://localhost:8000/api/register", newUser, {
@@ -47,14 +57,12 @@ const Register = props => {
         setErrors(err.response.data.errors);
       });
   };
-const cancelRegister = () => {
-  navigate("/productlist/", {
-    state: null
-  });
-};
+  const cancelRegister = () => {
+    navigate("/productlist/");
+  };
   return (
     <>
-      <Header isLoginButton={true} isRegisterButton={false} /> <br />
+      <Header /> <br />
       <div className="container w-60">
         <Card className="text-center" bg="dark" text={"white"}>
           <Card.Header as="h2">Register</Card.Header>
@@ -278,17 +286,20 @@ const cancelRegister = () => {
           <Card.Footer>
             <Button
               type="button"
-              variant="outline-success"
+              variant="success"
               onClick={registerUser}
               size="sm"
             >
               Register
             </Button>{" "}
-            
-              <Button type="button" variant="outline-danger"
-              onClick={cancelRegister} size="sm">
-                Cancel
-              </Button>
+            <Button
+              type="button"
+              variant="danger"
+              onClick={cancelRegister}
+              size="sm"
+            >
+              Cancel
+            </Button>
           </Card.Footer>
         </Card>
       </div>

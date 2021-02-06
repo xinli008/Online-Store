@@ -7,5 +7,5 @@ module.exports = function (app) {
   app.get("/api/users", authenticate, Users.getAll);
   app.get("/api/users/getLoggedInUser", Users.getLoggedInUser);
   app.get("/api/users/:id", Users.getUser);
-  app.get("/api/logout", Users.logout);
+  app.post("/api/logout", Users.logout);
 };

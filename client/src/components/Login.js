@@ -60,7 +60,7 @@ const Login = props => {
   };
   return (
     <>
-      <Header isLoginButton={false} isRegisterButton={true} /> <br />
+      <Header /> <br />
       <div className="container w-60">
         <Card className="text-center" bg="dark" text={"white"}>
           <Card.Header as="h2">Login</Card.Header>
@@ -133,7 +133,7 @@ const Login = props => {
           <Card.Footer>
             <Button
               type="button"
-              variant="outline-primary"
+              variant="primary"
               onClick={login}
               size="sm"
             >

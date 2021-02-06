@@ -7,7 +7,7 @@ import "font-awesome/css/font-awesome.min.css";
 const Checkout = props => {
   return (
     <>
-      <Header isLogoutButton={true} /> <br />
+      <Header /> <br />
       <div className="container">
         <div className="row">
           <div className="col-md-4 order-md-2 mb-4">

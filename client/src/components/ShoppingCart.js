@@ -9,7 +9,7 @@ const ShoppingCart = props => {
   const [qty, setQty] = useState(1);
   return (
     <div>
-      <Header isLogoutButton={true} /> <br />
+      <Header /> <br />
       <section className="container">
         <div className="row">
           <div className="col-lg-8">

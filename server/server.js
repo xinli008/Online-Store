@@ -15,6 +15,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 require("../server/routes/user.route")(app);
 require("../server/routes/product.route")(app);
+require("../server/routes/checkout.route")(app);
 
 app.listen(port, () => console.log(`Listening on port: ${port}`));
 
