@@ -20,7 +20,7 @@ const ShoppingCart = props => {
         if (res.data.user.products.length > 0) {
           setProducts(res.data.user.products);          
         }
-        console.log(res.data.user);
+        //console.log(res.data.user);
       })
       .catch(err => {
         navigate("/login");
@@ -55,7 +55,7 @@ const ShoppingCart = props => {
   const goToCheckout = () =>{
     navigate("/checkout/", { state: products });
   }
-  
+
   return (
     <div>
       <Header /> <br />
@@ -149,8 +149,8 @@ const ShoppingCart = props => {
                               </div>
                             </div>
                           </div>
-                          <hr className="mb-4"></hr>
                         </div>
+                        <hr className="mb-4"></hr>
                       </>
                     ))}
                   </>

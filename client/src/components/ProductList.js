@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default props => {
   const [modalShow, setModalShow] = useState(false);
+  const [isLoginRequired, setIsLoginRequired] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState();
   const [products, setProducts] = useState([]);
   const [selectedProduct , setSelectedProduct] = useState({});
@@ -285,6 +286,10 @@ Below API call can be uncommented if product is configured on backend.
     setSelectedProductPhotos(selProduct.photos);
   }
 
+  const closeQuickView = ()=>{
+    setModalShow(false);
+    setIsLoginRequired(false);
+  }
   const addProductToCart = (product) => {
     if (loggedInUser) {
       setSelectedProduct(product);
@@ -305,8 +310,9 @@ Below API call can be uncommented if product is configured on backend.
             setTempProductFail(true);
           });
     } else {
-      alert("Login first to add to cart");
-      navigate("/login");
+      setModalShow(true);
+      setIsLoginRequired(true);
+      //navigate("/login");
     }
   };
   return (
@@ -316,7 +322,7 @@ Below API call can be uncommented if product is configured on backend.
 
       <div className="container">
         <div className="row">
-        <div className="col-lg-4"></div>
+          <div className="col-lg-4"></div>
           <div className="col-lg-6">
             {tempProductPass ? (
               <Toast
@@ -349,7 +355,7 @@ Below API call can be uncommented if product is configured on backend.
             ) : (
               ""
             )}
-            <br/>
+            <br />
           </div>
         </div>
 
@@ -396,9 +402,10 @@ Below API call can be uncommented if product is configured on backend.
         </div>
         <QuickViewModal
           show={modalShow}
+          loginRequired={isLoginRequired}
           productData={selectedProduct}
           productImages={selectedProductPhotos}
-          onHide={() => setModalShow(false)}
+          onHide={closeQuickView}
         />
       </div>
     </>
