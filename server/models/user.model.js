@@ -51,6 +51,9 @@ const UserSchema = new mongoose.Schema(
           "Password rule: at least 8 characters, at least 1 numeric character, at least 1 lowercase letter, at least 1 uppercase letter and at least 1 special character"
       }*/
     },
+    products :{
+      type: Array
+    },
     payment: {
       card: {
         nameOnCard: {

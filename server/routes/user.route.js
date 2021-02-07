@@ -8,4 +8,6 @@ module.exports = function (app) {
   app.get("/api/users/getLoggedInUser", Users.getLoggedInUser);
   app.get("/api/users/:id", Users.getUser);
   app.post("/api/logout", Users.logout);
+  app.put("/api/users/:id", Users.updateUser);
+
 };

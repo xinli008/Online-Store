@@ -4,15 +4,21 @@ import QuickViewModal from "./QuickViewModal";
 import Header from "./Header";
 import Image from "react-bootstrap/Image";
 import { navigate } from "@reach/router";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import Toast from "react-bootstrap/Toast";
+import ToastBody from "react-bootstrap/ToastBody";
+import { faEye, faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default props => {
   const [modalShow, setModalShow] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState();
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState({});
+  const [selectedProduct , setSelectedProduct] = useState({});
+  const [existingProducts, setExistingProducts] = useState([]);
   const [selectedProductPhotos, setSelectedProductPhotos] = useState([]);
+  const [tempProd, setTempProd] = useState("");
+  const [tempProductPass, setTempProductPass] = useState(false);
+  const [tempProductFail, setTempProductFail] = useState(false);
 
   const testPorductArray = [
     {
@@ -239,37 +245,39 @@ export default props => {
       ]
     }
   ];
-
+  
   useEffect(() => {
+                    axios
+                      .get("http://localhost:8000/api/users/getLoggedInUser", {
+                        withCredentials: true
+                      })
+                      .then(res => {
+                        console.log(res.data.user);
+                        setLoggedInUser(res.data.user);
+                        setExistingProducts(res.data.user.products);
+                      })
+                      .catch(err => {
+                        console.log(err);
+                      });
+
+                    setProducts(testPorductArray);
+                    /*
+    Note: 
+testPorductArray variable can completely be removed and 
+Below API call can be uncommented if product is configured on backend.
+
     axios
-      .get("http://localhost:8000/api/users/getLoggedInUser", {
-        withCredentials: true
-      })
+      .get("http://localhost:8000/api/product")
       .then(res => {
-        setLoggedInUser(res.data.user);
+        console.log(res);
+        setProducts(res.data);
       })
       .catch(err => {
         console.log(err);
       });
-
-    setProducts(testPorductArray);
-    /*
-Note: 
-testPorductArray variable can completely be removed and 
-Below API call can be uncommented if product is configured on backend.
-
-axios
-.get("http://localhost:8000/api/product")
-.then(res => {
-console.log(res);
-setProducts(res.data);
-})
-.catch(err => {
-console.log(err);
-});
- 
-*/
-  }, []);
+    
+      */
+                  }, [selectedProduct]);
 
   const openQuickView = (selProduct) => {
     setModalShow(true);
@@ -279,22 +287,23 @@ console.log(err);
 
   const addProductToCart = (product) => {
     if (loggedInUser) {
+      setSelectedProduct(product);
+      setTempProd(product.productName);
       const userProducts = [];
-      userProducts.push(product);
-
-      axios
-        .post("http://localhost:8000/api/checkout", {
-          userId: loggedInUser._id,
-          products: userProducts
-        })
-        .then(res => {
-          console.log(res);
-          alert("product added to cart.");
-        })
-        .catch(err => {
-          alert(JSON.stringify(err))
-          console.log(err);
-        });
+      const selectedProd={ product:product, qty: 1 };
+      userProducts.push(...existingProducts, selectedProd);
+      
+        axios
+          .put(`http://localhost:8000/api/users/${loggedInUser._id}`, {
+            products: userProducts
+          })
+          .then(res => {
+            console.log(res.data);
+            setTempProductPass(true);            
+          })
+          .catch(err => {
+            setTempProductFail(true);
+          });
     } else {
       alert("Login first to add to cart");
       navigate("/login");
@@ -304,7 +313,46 @@ console.log(err);
     <>
       <Header />
       <br />
+
       <div className="container">
+        <div className="row">
+        <div className="col-lg-4"></div>
+          <div className="col-lg-6">
+            {tempProductPass ? (
+              <Toast
+                onClose={() => setTempProductPass(false)}
+                show={tempProductPass}
+                delay={3000}
+                autohide
+              >
+                <Toast.Body style={{ backgroundColor: "lightgreen" }}>
+                  <strong>{tempProd}</strong> added to cart successfully!!{" "}
+                  <FontAwesomeIcon icon={faCheckCircle} />
+                </Toast.Body>
+              </Toast>
+            ) : (
+              ""
+            )}
+
+            {tempProductFail ? (
+              <Toast
+                onClose={() => setTempProductFail(false)}
+                show={tempProductFail}
+                delay={3000}
+                autohide
+              >
+                <Toast.Body style={{ backgroundColor: "lightred" }}>
+                  Unable to add <strong>{tempProd}</strong> to cart!!{" "}
+                  <FontAwesomeIcon icon={faTimesCircle} />
+                </Toast.Body>
+              </Toast>
+            ) : (
+              ""
+            )}
+            <br/>
+          </div>
+        </div>
+
         <div className="row">
           {products.map((product, i) => (
             <div className="col-md-2 col-sm-5" key={i}>

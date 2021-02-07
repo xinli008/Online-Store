@@ -19,7 +19,7 @@ module.exports.getLoggedInUser = (req, res) => {
  
   const decodedJWT = jwt.decode(req.cookies.usertoken, { complete: true });
 
- User.findById(decodedJWT.payload.id)
+ User.findById(decodedJWT.payload.id) 
 .then(user => res.json({ user: user }))
 .catch(err => res.json({ error: err }));
 };
@@ -92,3 +92,11 @@ module.exports.logout = (req, res) => {
   res.clearCookie("usertoken");
   res.sendStatus(200);
 };
+
+module.exports.updateUser = (req, res) => {
+    User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true
+    })
+      .then(updatedUser => res.json(updatedUser))
+      .catch(err => res.status(400).json(err));
+  }

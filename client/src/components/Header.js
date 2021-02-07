@@ -65,34 +65,35 @@ export default props => {
             {isLoginButton ? (
               <Nav.Link onClick={() => navigate("/login")}>Log In</Nav.Link>
             ) : (
-                ""
-              )}
+              ""
+            )}
             {isRegisterButton ? (
               <Nav.Link eventKey={2} onClick={() => navigate("/register")}>
                 Register
               </Nav.Link>
             ) : (
-                ""
-              )}
+              ""
+            )}
             {isLogoutButton ? (
               <Nav.Link onClick={() => navigate("/dashboard")}>
+                {loggedInUser.firstName} {loggedInUser.lastName} {" "}
                 <FontAwesomeIcon icon={faUser} />
               </Nav.Link>
             ) : (
-                ""
-              )}
+              ""
+            )}
             {isLogoutButton ? (
               <Nav.Link onClick={() => navigate("/shoppingcart")}>
                 <FontAwesomeIcon icon={faShoppingCart} />
               </Nav.Link>
             ) : (
-                ""
-              )}
+              ""
+            )}
             {isLogoutButton ? (
               <Nav.Link onClick={logout}>Log Out</Nav.Link>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
