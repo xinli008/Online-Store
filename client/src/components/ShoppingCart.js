@@ -41,12 +41,14 @@ const ShoppingCart = props => {
   }
 
   const removeProduct =(product)=>{
-    //products.pop(product);
-    setProducts({
+    products.pop(product);
+    
+    /*setProducts({
       Products: products.filter(function(prod) {
         return prod !== product;
       })
-    });
+    });*/
+    
     axios
       .put(`http://localhost:8000/api/users/${loggedInUser._id}`, {
         products: products
