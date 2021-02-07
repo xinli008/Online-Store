@@ -6,7 +6,7 @@ import "font-awesome/css/font-awesome.min.css";
 import "mdbreact/dist/css/mdb.css";
 
 const ShoppingCart = props => {
-  const [qty, setQty] = useState(1);
+ // const [qty, setQty] = useState(1);
   const [loggedInUser, setLoggedInUser] = useState();
   const [products, setProducts] = useState([]);
 
@@ -26,7 +26,7 @@ const ShoppingCart = props => {
         navigate("/login");
         console.log(err);
       });
-  }, [products]);
+  }, []); //[products] Cindy
 
   if (products.length> 0) {
     var tempArray = [];
@@ -41,7 +41,11 @@ const ShoppingCart = props => {
   }
 
   const removeProduct =(product)=>{
-    products.pop(product);
+    setProducts({Products: products.filter(function(prod) { 
+      return prod !== product; 
+        })});
+
+   
     axios
       .put(`http://localhost:8000/api/users/${loggedInUser._id}`, {
         products: products
@@ -53,7 +57,7 @@ const ShoppingCart = props => {
   }
 
   const goToCheckout = () =>{
-    navigate("/checkout/", { state: products });
+     navigate("/checkout", { state: { products: products, loggedInUser: loggedInUser }}); // 
   }
   
   return (

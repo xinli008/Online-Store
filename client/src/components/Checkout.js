@@ -8,6 +8,7 @@ const Checkout = props => {
   const[firstNameText, setFirstNameText] = useState('');
   const[lastNameText, setLastNameText] = useState('');
   const[addressText, setAddressText] = useState('');
+  const[cityText, setCityText] = useState('');
   const[countryText, setCountryText] = useState('');
   const[stateText, setStateText] = useState('');
   const[zipText, setZipText] = useState('');
@@ -19,6 +20,7 @@ const Checkout = props => {
   const[firstNameLabel, setFirstNameLabel] = useState('');
   const[lastNameLabel, setLastNameLabel] = useState('');
   const[addressLabel, setAddressLabel] = useState('');
+  const[cityLabel, setCityLabel] = useState('');
   const[countryLabel, setCountryLabel] = useState('');
   const[stateLabel, setStateLabel] = useState('');
   const[zipLabel, setZipLabel] = useState('');
@@ -26,6 +28,14 @@ const Checkout = props => {
   const[cardNumberLabel, setCardNumberLabel] = useState('');
   const[expirationLabel, setExpirationLabel] = useState('');
   const[cvvLabel, setCvvlabel] = useState('');
+
+  const {products, loggedInUser} = props.location.state;
+  
+  //console.dir( props.location.state);
+  let total = products.reduce( function(sum, product){
+    return sum = sum + product.product.price* product.qty;
+  },0);
+ 
   
   const validateInput = event => {
     event.preventDefault();
@@ -89,6 +99,13 @@ const Checkout = props => {
       setAddressLabel('');
     }
 
+    if (cityText.length < 3) {
+      setCityLabel('City should be longer than 3 characters');
+      return false;
+    } else {
+      setCityLabel('');
+    }
+
     if (firstNameText.length < 3) {
       setFirstNameLabel('First name should be longer than 3 characters');
       return false;
@@ -96,8 +113,8 @@ const Checkout = props => {
     setFirstNameLabel('');
     }
 
-     if (lastNameText.length < 3) {
-       setLastNameLabel('Last name should be longer than 3 characters');
+     if (lastNameText.length < 2) {
+       setLastNameLabel('Last name should be longer than 2 characters');
        return false;
      } else {
       setLastNameLabel('');
@@ -111,10 +128,57 @@ const Checkout = props => {
 
   const performCheckoutOperations = () => {
     // use axios to update payment info on user
+    //
+    const payment = {
+      card: {
+          nameOnCard: cardNameText,
+          cardNumber:cardNumberText,
+          expiration: expirationText,
+          cvv: cvvText,
+      },
+      billingAddress : {
+          streetAddress: addressText,
+          city: cityText,
+          state: stateText,
+          zip: zipText,
+
+      }
+    };
+     // use axios to update payment info on user
+      axios
+        .put(`http://localhost:8000/api/users/${loggedInUser._id}`,{
+         // products:products,
+          payment:payment,
+        })
+        .then(res => {
+          console.log(res.data);
+         
+        })
+        .catch(err => {
+          console.log(err);
+        });
 
     // use axios to create checkout object and call checkout api
-  }
+    axios
+        .post("http://localhost:8000/api/checkout", {
+          userId: loggedInUser._id,
+          products : products
+        })
+        .then(res => {
+          console.log(res);
+          navigate("/productlist");
+          alert('Thank you for your order');
+        })
+        .catch(err => {
+          //alert(JSON.stringify(err))
+          console.log(err);
+        });
 
+        //empty shopping carts
+
+
+  }
+  
   return (
     <>
       <Header /> <br />
@@ -124,34 +188,23 @@ const Checkout = props => {
             <div className="col-md-4 order-md-2 mb-4">
               <h4 className="d-flex justify-content-between align-items-center mb-3">
                 <span className="text-muted">Your cart</span>
-                <span className="badge badge-secondary badge-pill">3</span>
+                <span className="badge badge-secondary badge-pill">{products.length}</span>
               </h4>
               <ul className="list-group mb-3">
-              {/*   <li className="list-group-item d-flex justify-content-between lh-condensed">
-                  <div>
-                    <h6 className="my-0">Product name</h6>
-                    <small className="text-muted">Brief description</small>
-                  </div>
-                  <span className="text-muted">$12</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between lh-condensed">
-                  <div>
-                    <h6 className="my-0">Second product</h6>
-                    <small className="text-muted">Brief description</small>
-                  </div>
-                  <span className="text-muted">$8</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between lh-condensed">
-                  <div>
-                    <h6 className="my-0">Third item</h6>
-                    <small className="text-muted">Brief description</small>
-                  </div>
-                  <span className="text-muted">$5</span>
-                </li>              
+              {products.map((singleProd, i) => (
+               
+                                        <>
+                                          <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            {singleProd.product.productName}{" "}
+                                            <span>${singleProd.product.price}</span>
+                                          </li>
+                                          <p className="text-muted">(qty: {singleProd.qty})</p>
+                                        </>
+                                      ) )}       
                 <li className="list-group-item d-flex justify-content-between">
                   <span><strong>Total (USD)</strong></span>
-                  <strong>$20</strong>
-                </li> */}
+                  <strong>{total}</strong>
+                </li> 
               </ul>
 
               <div className="card p-2">
@@ -199,7 +252,7 @@ const Checkout = props => {
                     type="text"
                     className="form-control"
                     id="address"
-                    placeholder="1234 Main St"
+                    placeholder="Suite 3, 1234 Main St"
                     required
                     onChange={e => setAddressText(e.target.value)}
                   />
@@ -208,15 +261,18 @@ const Checkout = props => {
                   </div>
                 </div>
 
+              
                 <div className="mb-3">
-                  <label for="address2">
-                    Address 2 <span className="text-muted">(Optional)</span>
+                  <label for="city">
+                    {cityLabel}
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="address2"
-                    placeholder="Apartment or suite"
+                    id="city"
+                    placeholder="City"
+                    required
+                    onChange={e => setCityText(e.target.value)}
                   />
                 </div>
 

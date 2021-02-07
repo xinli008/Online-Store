@@ -277,7 +277,7 @@ Below API call can be uncommented if product is configured on backend.
       });
     
       */
-                  }, [selectedProduct]);
+                  }, []);  //[selectedProduct] Cindy
 
   const openQuickView = (selProduct) => {
     setModalShow(true);
