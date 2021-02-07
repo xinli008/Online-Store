@@ -34,7 +34,9 @@ const Checkout = props => {
   //console.dir( props.location.state);
   let total = products.reduce(function(sum, product) {
     return (sum = sum + product.product.price * product.qty);
-  }, 2);
+  }, 0);
+
+  total = total.toFixed(2);
 
   const validateInput = event => {
     event.preventDefault();
