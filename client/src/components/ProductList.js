@@ -278,7 +278,7 @@ Below API call can be uncommented if product is configured on backend.
       });
     
       */
-                  }, [selectedProduct]);
+                  }, [tempProductPass]);
 
   const openQuickView = (selProduct) => {
     setModalShow(true);
@@ -296,7 +296,11 @@ Below API call can be uncommented if product is configured on backend.
       setTempProd(product.productName);
       const userProducts = [];
       const selectedProd={ product:product, qty: 1 };
-      userProducts.push(...existingProducts, selectedProd);
+      if (existingProducts.length > 0) {
+        userProducts.push(...existingProducts, selectedProd);
+      }else{
+      userProducts.push(selectedProd);
+      }
       
         axios
           .put(`http://localhost:8000/api/users/${loggedInUser._id}`, {
