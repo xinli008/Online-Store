@@ -82,10 +82,10 @@ const Register = props => {
                       onClose={() => setUserCreated("")}
                       dismissible
                     >
-                      <Alert.Heading>Success!</Alert.Heading>
+                      <Alert.Heading>Success!!</Alert.Heading>
                       <p>
-                        User created successfully!
-                        <Link to={"/login"}> Click here</Link> to Login...
+                        User created successfully!!
+                        <Link to={"/productlist"}> Click here</Link> to go to homepage...
                       </p>
                     </Alert>
                   </div>

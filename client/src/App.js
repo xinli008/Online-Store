@@ -13,8 +13,7 @@ function App() {
   return (
     <div style={{ backgroundColor: "lightgrey" }}>
       <Router>
-        <ProductList path="/productlist" default />
-        <ProductList path="/productlistnew/:id" />
+        <ProductList path="/productlist" default />        
         <Login path="/login" />
         <Register path="/register" />
         <UserDashboard path="/dashboard" />

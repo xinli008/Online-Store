@@ -35,7 +35,7 @@ const Checkout = props => {
   let total = products.reduce(function(sum, product) {
     return (sum = sum + product.product.price * product.qty);
   }, 0);
-
+  
   total = total.toFixed(2);
 
   const validateInput = event => {
@@ -291,7 +291,7 @@ const Checkout = props => {
                     className="custom-select d-block w-100"
                     id="country"
                     required
-                    onChange={e => setCountryText(e.target.selectedValue)}
+                    onChange={e => setCountryText(e.target.value)}
                   >
                     <option value="Choose">Choose...</option>
                     <option value="US">United States</option>
@@ -306,7 +306,7 @@ const Checkout = props => {
                     className="custom-select d-block w-100"
                     id="state"
                     required
-                    onChange={e => setStateText(e.target.selectedValue)}
+                    onChange={e => setStateText(e.target.value)}
                   >
                     <option value="Choose">Choose...</option>
                     <option value="AL">Alabama</option>

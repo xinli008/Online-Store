@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
@@ -14,6 +14,23 @@ const Login = props => {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showLogin, setShowLogin] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/users/getLoggedInUser", {
+        withCredentials: true
+      })
+      .then(res => {
+        //console.log(res);       
+        navigate("/productlist");
+      })
+      .catch(err => {        
+        console.log(err);
+        setShowLogin(true);
+      });
+
+  }, []);
 
   const login = event => {
     event.preventDefault();
@@ -35,9 +52,7 @@ const Login = props => {
         )
         .then(res => {
           console.log(res);
-          navigate("/productlist/", {
-            state: res.data 
-          });
+          navigate("/productlist/");
         })
         .catch(err => {
           console.log(err);
@@ -61,87 +76,95 @@ const Login = props => {
   return (
     <>
       <Header /> <br />
-      <div className="container w-60">
-        <Card className="text-center" bg="dark" text={"white"}>
-          <Card.Header as="h2">Login</Card.Header>
-          <Card.Body
-            style={{
-              backgroundColor: "lightgrey",
-              color: "black"
-            }}
-          >
-            <div
-              className="container"
-              style={{
-                margin: "auto",
-                width: "50%"
-              }}
-            >
-              <div className="row">
-                {errorMessage ? (
-                  <div className="col w-5">
-                    <Alert
-                      variant="danger"
-                      onClose={() => setErrorMessage("")}
-                      dismissible
-                    >
-                      {errorMessage}
-                    </Alert>
+      {showLogin ? (
+        <>
+          <div className="container w-60">
+            <Card className="text-center" bg="dark" text={"white"}>
+              <Card.Header as="h2">Login</Card.Header>
+              <Card.Body
+                style={{
+                  backgroundColor: "lightgrey",
+                  color: "black"
+                }}
+              >
+                <div
+                  className="container"
+                  style={{
+                    margin: "auto",
+                    width: "50%"
+                  }}
+                >
+                  <div className="row">
+                    {errorMessage ? (
+                      <div className="col w-5">
+                        <Alert
+                          variant="danger"
+                          onClose={() => setErrorMessage("")}
+                          dismissible
+                        >
+                          {errorMessage}
+                        </Alert>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="row">
-                <div className="col">
-                  <form>
-                    <div className="form-group">
-                      <label>Email</label>
-                      <input
-                        className="form-control"
-                        placeholder="Enter email"
-                        type="text"
-                        onChange={handleEmail}
-                      ></input>
-                      {emailError ? (
-                        <p className="error-message">{emailError}</p>
-                      ) : (
-                        ""
-                      )}
+                  <div className="row">
+                    <div className="col">
+                      <form>
+                        <div className="form-group">
+                          <label>Email</label>
+                          <input
+                            className="form-control"
+                            placeholder="Enter email"
+                            type="text"
+                            onChange={handleEmail}
+                          ></input>
+                          {emailError ? (
+                            <p className="error-message">{emailError}</p>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        <div className="form-group">
+                          <label>Password</label>
+                          <input
+                            className="form-control"
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            onChange={handlePassword}
+                            value={password}
+                          />
+                          {passwordError ? (
+                            <span className="error-message">
+                              {passwordError}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </form>
                     </div>
-                    <div className="form-group">
-                      <label>Password</label>
-                      <input
-                        className="form-control"
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        onChange={handlePassword}
-                        value={password}
-                      />
-                      {passwordError ? (
-                        <span className="error-message">{passwordError}</span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </Card.Body>
-          <Card.Footer>
-            <Button
-              type="button"
-              variant="primary"
-              onClick={login}
-              size="sm"
-            >
-              Login
-            </Button>
-          </Card.Footer>
-        </Card>
-      </div>
+              </Card.Body>
+              <Card.Footer>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={login}
+                  size="sm"
+                >
+                  Login
+                </Button>
+              </Card.Footer>
+            </Card>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 };

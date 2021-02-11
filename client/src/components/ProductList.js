@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default props => {
   const [modalShow, setModalShow] = useState(false);
   const [isLoginRequired, setIsLoginRequired] = useState(false);
+  const [isLoginRequired2, setIsLoginRequired2] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState();
   const [products, setProducts] = useState([]);
   const [selectedProduct , setSelectedProduct] = useState({});
@@ -22,21 +23,6 @@ export default props => {
   const [tempProductFail, setTempProductFail] = useState(false);
 
   const testPorductArray = [
-    {
-      productName: "Dead Sea Mud Mask",
-      description:
-        "New York Biology Dead Sea Mud Mask for Face and Body - Spa Quality Pore Reducer for Acne, Blackheads and Oily Skin, Natural Skincare for Women, Men - Tightens Skin for A Healthier Complexion - 8.8 oz",
-      rating: 4.5,
-      price: 15.49,
-      discount: 0,
-      categories: ["Beauty", "Health"],
-      photos: [
-        "https://images-na.ssl-images-amazon.com/images/I/81UYOXNTqIL._SL1500_.jpg",
-        "https://images-na.ssl-images-amazon.com/images/I/61DJ0VwouaL._SL1000_.jpg",
-        "https://images-na.ssl-images-amazon.com/images/I/61z6cdp7mjL._SL1500_.jpg",
-        "https://images-na.ssl-images-amazon.com/images/I/61UpGMnOicL._SL1500_.jpg"
-      ]
-    },
     {
       productName: "Olay Regenerist",
       description:
@@ -72,7 +58,7 @@ export default props => {
       description:
         "Meaningful Beauty Anti-Aging Daily Skincare System with Youth Activating Serum",
       rating: 4.5,
-      price: 59.0,
+      price: 59.99,
       discount: 0,
       categories: ["Beauty", "Health"],
       photos: [
@@ -80,6 +66,21 @@ export default props => {
         "https://images-na.ssl-images-amazon.com/images/I/51u2ypE2onL._SL1000_.jpg",
         "https://images-na.ssl-images-amazon.com/images/I/61TmUpBbzfL._SL1000_.jpg",
         "https://images-na.ssl-images-amazon.com/images/I/41gsvOMR3AL._SL1000_.jpg"
+      ]
+    },
+    {
+      productName: "Dead Sea Mud Mask",
+      description:
+        "New York Biology Dead Sea Mud Mask for Face and Body - Spa Quality Pore Reducer for Acne, Blackheads and Oily Skin, Natural Skincare for Women, Men - Tightens Skin for A Healthier Complexion - 8.8 oz",
+      rating: 4.5,
+      price: 15.49,
+      discount: 0,
+      categories: ["Beauty", "Health"],
+      photos: [
+        "https://images-na.ssl-images-amazon.com/images/I/81UYOXNTqIL._SL1500_.jpg",
+        "https://images-na.ssl-images-amazon.com/images/I/61DJ0VwouaL._SL1000_.jpg",
+        "https://images-na.ssl-images-amazon.com/images/I/61z6cdp7mjL._SL1500_.jpg",
+        "https://images-na.ssl-images-amazon.com/images/I/61UpGMnOicL._SL1500_.jpg"
       ]
     },
     {
@@ -117,7 +118,7 @@ export default props => {
       description:
         "Apple MacBook Pro 13in MD101LL/A 8GB/128GB SSD Mid-2012 i5-3210M 2.5GHz (Renewed)",
       rating: 4.5,
-      price: 2500,
+      price: 2499.99,
       discount: 0,
       categories: ["Technology"],
       photos: [
@@ -259,11 +260,12 @@ export default props => {
                       })
                       .catch(err => {
                         console.log(err);
+                        setIsLoginRequired(false);
                       });
 
                     setProducts(testPorductArray);
                     /*
-    Note: 
+     Note: 
 testPorductArray variable can completely be removed and 
 Below API call can be uncommented if product is configured on backend.
 
@@ -284,6 +286,11 @@ Below API call can be uncommented if product is configured on backend.
     setModalShow(true);
     setSelectedProduct(selProduct);
     setSelectedProductPhotos(selProduct.photos);
+    if (!loggedInUser) {
+      setIsLoginRequired2(true);
+    }else{
+      setIsLoginRequired2(false);
+    }
   }
 
   const closeQuickView = ()=>{
@@ -319,6 +326,11 @@ Below API call can be uncommented if product is configured on backend.
       //navigate("/login");
     }
   };
+ 
+  const addtoCartModal = (prod)=> {
+      addProductToCart(prod);
+  }
+
   return (
     <>
       <Header />
@@ -365,7 +377,7 @@ Below API call can be uncommented if product is configured on backend.
 
         <div className="row">
           {products.map((product, i) => (
-            <div className="col-md-2 col-sm-5" key={i}>
+            <div className="col-md-3 col-sm-5" key={i}>
               <div className="product-grid2">
                 <div className="product-image2">
                   <a>
@@ -406,10 +418,12 @@ Below API call can be uncommented if product is configured on backend.
         </div>
         <QuickViewModal
           show={modalShow}
+          loginRequired2={isLoginRequired2}
           loginRequired={isLoginRequired}
           productData={selectedProduct}
           productImages={selectedProductPhotos}
           onHide={closeQuickView}
+          callAddToCart={() => addtoCartModal(selectedProduct)}
         />
       </div>
     </>

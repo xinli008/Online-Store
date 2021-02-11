@@ -3,7 +3,7 @@
 }
 
 .error-message {
-  color:red;
+  color: red;
 }
 
 html {
@@ -229,5 +229,11 @@ html {
 @media screen and (max-width:990px) {
   .product-grid2 {
     margin-bottom: 30px
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .col-md-3 {
+    max-width: 20% !important;
   }
 }

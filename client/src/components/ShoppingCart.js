@@ -18,7 +18,7 @@ const ShoppingCart = props => {
       .then(res => {
         setLoggedInUser(res.data.user);
         if (res.data.user.products.length > 0) {
-          setProducts(res.data.user.products);          
+          setProducts(res.data.user.products);
         }
         //console.log(res.data.user);
       })
@@ -41,17 +41,20 @@ const ShoppingCart = props => {
   }
 
   const removeProduct =(product)=>{
-    products.pop(product);
-    
+    //products.pop(product);
+
+    let prodArr = products.filter(function(prod) {
+      return prod !== product;
+    });
+
     /*setProducts({
       Products: products.filter(function(prod) {
         return prod !== product;
       })
     });*/
-    
     axios
       .put(`http://localhost:8000/api/users/${loggedInUser._id}`, {
-        products: products
+        products: prodArr
       })
       .then(res => {
         console.log(res.data);
@@ -75,7 +78,7 @@ const ShoppingCart = props => {
             <div className="card wish-list mb-3">
               <div className="card-body">
                 <h5 className="mb-4">
-                  Shopping Cart (<span>{products.length}</span> item)
+                  Shopping Cart (<span>{products.length}</span> item{products.length > 1 ? 's' : '' })
                 </h5>
                 {products.length > 0 ? (
                   <>
@@ -172,7 +175,7 @@ const ShoppingCart = props => {
 
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="mb-4">We accept</h5>
+                <h5 className="mb-1">We accept</h5>
 
                 <img
                   className="mr-2"

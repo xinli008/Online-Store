@@ -5,10 +5,21 @@ import Badge from "react-bootstrap/Badge";
 import Carousel from 'react-bootstrap/Carousel';
 import { navigate } from "@reach/router";
 import "font-awesome/css/font-awesome.min.css";
+import Alert from 'react-bootstrap/Alert';
 
 const QuickViewModal = (props) => {
     const [qty, setQty] = useState(1);
+    const [errorMessage, setErrorMessage] = useState(false);
 
+    const addToCartHandler= (prod) => {
+      if (props.loginRequired2) {
+        setErrorMessage(true);
+      }else{
+        props.callAddToCart();
+        props.onHide();
+      }
+      
+    }
   return (
     <Modal
       {...props}
@@ -46,6 +57,29 @@ const QuickViewModal = (props) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            {errorMessage ? (
+              <>
+                <div className="row">
+                <div className="col-lg-2"></div>
+                  <div className="col-lg-8">
+                    <Alert
+                      variant="danger"
+                      onClose={() => setErrorMessage(false)}
+                      dismissible
+                    >
+                      <Alert.Heading>Login required!!!</Alert.Heading>
+                      <p>
+                        Login first to add{" "}
+                        <strong>{props.productData.productName} </strong> to
+                        cart.
+                      </p>
+                    </Alert>
+                  </div>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
             <div className="row">
               <div className="col-lg-6">
                 <Carousel>
@@ -83,7 +117,12 @@ const QuickViewModal = (props) => {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="success">Add to Cart</Button>{" "}
+            <Button
+              variant="success"
+              onClick={() => addToCartHandler(props.productData)}
+            >
+              Add to Cart
+            </Button>{" "}
             <Button onClick={props.onHide}>Close</Button>
           </Modal.Footer>
         </>
